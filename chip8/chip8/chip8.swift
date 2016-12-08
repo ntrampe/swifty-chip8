@@ -6,6 +6,8 @@
 //  Copyright © 2016 Off Kilter Studios. All rights reserved.
 //
 
+import Foundation
+
 struct chip8 {
   
   // graphics memory (64 x 32 pixels)
@@ -67,4 +69,15 @@ struct chip8 {
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
   ]
   
+  init() {
+    
+    // load fontset
+    for i in 0...chip8_fontset.count-1 {
+      memory[i] = chip8_fontset[i]
+    }
+    
+    // reset timers
+    
+    srand48(time(nil))
+  }
 }
