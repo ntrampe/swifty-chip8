@@ -81,6 +81,28 @@ struct chip8 {
     srand48(time(nil))
   }
   
+  mutating func load(rom: String) {
+    
+    // path to ROM
+    let path = Bundle.main.path(forResource: rom, ofType: nil)!
+    
+    // input stream to read file data in
+    let inputStream = InputStream(fileAtPath: path)!
+    
+    // buffer to store data read
+    var inputBuffer = [UInt8](repeating: 0, count: 4096-512)
+    
+    // read file into buffer
+    inputStream.open()
+    inputStream.read(&inputBuffer, maxLength: inputBuffer.count)
+    inputStream.close()
+    
+    // load buffer into memory starting at 0x200
+    for i in 0...inputBuffer.count-1 {
+      memory[i + 512] = inputBuffer[i]
+    }
+  }
+  
   mutating func emulateCycle() {
     // fetch opcode
     
