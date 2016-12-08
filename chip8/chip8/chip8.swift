@@ -5,6 +5,10 @@
 //  Created by Nicholas Trampe on 12/8/16.
 //  Copyright © 2016 Off Kilter Studios. All rights reserved.
 //
+//
+// The following class was created with the help of this tutorial:
+//  http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
+//
 
 import Foundation
 
