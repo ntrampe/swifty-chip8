@@ -80,4 +80,34 @@ struct chip8 {
     
     srand48(time(nil))
   }
+  
+  
+  func printGfx() {
+    
+    var str = ""
+    
+    for y in 0...31 {
+      for x in 0...63 {
+        str += (gfx[x + (64 * y)] == 1 ? "O" : " ")
+      }
+      
+      str += "\n"
+    }
+    
+    print(str)
+  }
+  
+  private func getHEXString(number: UInt16) -> String {
+    return String(format:"%2X", number)
+  }
+  
+  private func getHEXString(number: UInt8) -> String {
+    return String(format:"%2X", number)
+  }
+  
+  private func debugPrint(words: String) {
+    if debugging {
+      print(words)
+    }
+  }
 }
