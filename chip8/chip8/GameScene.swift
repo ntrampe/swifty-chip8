@@ -11,9 +11,11 @@ import GameplayKit
 
 class GameScene: SKScene {
     
+  var game = chip8()
   var graphics = [SKShapeNode?](repeating: nil, count: 64 * 32) 
   
   override func didMove(to view: SKView) {
+    game.load(rom: "INVADERS")
     
     initializeGrid(size: view.frame.size)
   }
@@ -44,7 +46,15 @@ class GameScene: SKScene {
   }
   
   func touchDown(atPoint pos : CGPoint) {
-    
+    if pos.y < 100 {
+      game.key[5] = 1
+    } else {
+      if pos.x < self.view!.frame.size.width / 2 {
+        game.key[4] = 1
+      } else {
+        game.key[6] = 1
+      }
+    }
   }
   
   func touchMoved(toPoint pos : CGPoint) {
@@ -52,10 +62,12 @@ class GameScene: SKScene {
   }
   
   func touchUp(atPoint pos : CGPoint) {
-    
+    for i in 0...15 {
+      game.key[i] = 0
+    }
   }
   
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     for t in touches { self.touchDown(atPoint: t.location(in: self)) }
   }
   
@@ -73,6 +85,18 @@ class GameScene: SKScene {
   
   
   override func update(_ currentTime: TimeInterval) {
-    // Called before each frame is rendered
+    
+    while !game.drawFlag {
+      game.emulateCycle()
+    }
+    
+    for x in 0...63 {
+      for y in 0...31 {
+        self.graphics[x + (64 * y)]!.fillColor = (game.gfx[x + (64 * y)] == 1 ? UIColor.white : UIColor.clear)
+      }
+    }
+    
+    game.drawFlag = false
+    
   }
 }
